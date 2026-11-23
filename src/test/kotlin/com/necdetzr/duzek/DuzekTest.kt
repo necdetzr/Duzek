@@ -80,4 +80,41 @@ class DuzekTest {
             assertEquals(expected, Duzek.dative(name), name)
         }
     }
+    @Test
+    fun `uses pronunciation to select the suffix and connector`() {
+        assertEquals(
+            "Michael'a",
+            Duzek.dative("Michael", pronunciation = "Maykıl")
+        )
+        assertEquals(
+            "Chloe'ye",
+            Duzek.dative("Chloe", pronunciation = "Kloi")
+        )
+        assertEquals(
+            "George'a",
+            Duzek.dative("George", pronunciation = "Corc")
+        )
+    }
+    @Test
+    fun `rejects explicitly blank pronunciation`() {
+        listOf("", " ", "\t").forEach { pronunciation ->
+            assertFailsWith<IllegalArgumentException> {
+                Duzek.dative("Michael", pronunciation = pronunciation)
+            }
+        }
+    }
+    @Test
+    fun `accepts names without vowels when pronunciation is provided`() {
+        assertEquals(
+            "TRT'ye",
+            Duzek.dative("TRT", pronunciation = "te re te")
+        )
+    }
+
+    @Test
+    fun `rejects pronunciation without a Turkish vowel`() {
+        assertFailsWith<IllegalArgumentException> {
+            Duzek.dative("Michael", pronunciation = "xyz")
+        }
+    }
 }
