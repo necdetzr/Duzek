@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.4.20"
     `java-library`
+    `maven-publish`
     signing
     id("org.jetbrains.dokka") version "2.2.0"
     id("com.vanniktech.maven.publish") version "0.37.0"
@@ -29,7 +30,23 @@ tasks.test {
     useJUnitPlatform()
 }
 
+// Keep the copyright notice and MIT terms with every distributed JAR.
+tasks.withType<Jar>().configureEach {
+    from(layout.projectDirectory.file("LICENSE")) {
+        into("META-INF")
+    }
+}
+
+val apiDocumentationJar = tasks.register<Jar>("apiDocumentationJar") {
+    archiveClassifier.set("javadoc")
+    dependsOn("dokkaGeneratePublicationHtml")
+    from(layout.buildDirectory.dir("dokka/html"))
+}
+
 mavenPublishing {
+    configureBasedOnAppliedPlugins(
+        javadocJar = com.vanniktech.maven.publish.JavadocJar.None()
+    )
     coordinates(group.toString(), "duzek", version.toString())
     publishToMavenCentral(automaticRelease = false)
     // Publishers enable signing with signAllPublications=true in user Gradle properties.
@@ -59,6 +76,12 @@ mavenPublishing {
             connection.set("scm:git:https://github.com/necdetzr/Duzek.git")
             developerConnection.set("scm:git:ssh://git@github.com/necdetzr/Duzek.git")
         }
+    }
+}
+
+publishing {
+    publications.named<MavenPublication>("maven") {
+        artifact(apiDocumentationJar)
     }
 }
 
