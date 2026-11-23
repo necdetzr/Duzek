@@ -1,45 +1,37 @@
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Gradle and Kotlin caches
+.gradle/
+.kotlin/
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
+# Build output (the Gradle wrapper JAR stays tracked)
+build/
+out/
+*.class
+
+# Local IDE configuration
+.idea/
+.vscode/
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+*.iws
 
-### Kotlin ###
-.kotlin
+# Machine-specific settings and credentials
+local.properties
+.env
+.env.*
+!.env.example
+gradle-local.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.key
+*.pem
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
+# OS and editor temporary files
 .DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.swp
+*.swo
+*~
